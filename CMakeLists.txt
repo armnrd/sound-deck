@@ -18,8 +18,9 @@ find_package(Qt6 COMPONENTS
 
 find_package(yaml-cpp REQUIRED)
 
-add_executable(sound-deck
+add_executable(sound-deck WIN32
         main.cpp
+        resources.qrc
         audio_panel.cpp
         audio_panel.hpp
         audio_panel.ui
@@ -28,6 +29,9 @@ add_executable(sound-deck
         main_window.ui
         config.cpp
         config.hpp
+        control_panel.cpp
+        control_panel.hpp
+        control_panel.ui
 )
 
 target_link_libraries(sound-deck

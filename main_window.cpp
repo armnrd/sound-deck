@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Initialize member variables
-    layout = new QGridLayout(this);
+    layout = new QGridLayout(nullptr);
     panel1 = new AudioPanel(this);
     panel2 = new AudioPanel(this);
     panel3 = new AudioPanel(this);

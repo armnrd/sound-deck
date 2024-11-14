@@ -47,6 +47,7 @@ private:
     QTimer *ticker_timer;
     QString ticker_text = "";
     int ticker_position = 0;
+    int duration = 0;
     bool repeat_mode = false;
 };
 
