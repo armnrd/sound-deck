@@ -17,3 +17,6 @@ Clone the repository and build with **CMake**:
 git clone https://github.com/your-username/sound-deck.git
 cd sound-deck
 mkdir build
+cd build
+cmake ..
+make sound-deck
