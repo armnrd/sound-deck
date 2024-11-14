@@ -111,6 +111,9 @@
       <height>121</height>
      </rect>
     </property>
+    <property name="wrapping">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="button_play">
     <property name="geometry">

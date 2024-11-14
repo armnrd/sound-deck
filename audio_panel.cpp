@@ -12,6 +12,7 @@
 #include <QDial>
 #include <QTimer>
 #include <QFileDialog>
+#include <QDebug>
 #include "audio_panel.hpp"
 #include "ui_audio_panel.h"
 
@@ -43,6 +44,16 @@ AudioPanel::AudioPanel(QWidget *parent) :
     player->setAudioOutput(audio_output);
     ticker_timer->start(100);
     ui->slider_volume->setValue(100);
+
+    for (auto & button: {ui->button_play, ui->button_repeat, ui->button_pause, ui->button_select, ui->button_stop}) {
+        button->setText("");
+    }
+
+    ui->button_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    ui->button_pause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+    ui->button_stop->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
+    ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_CommandLink));
+    ui->button_select->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
 }
 
 AudioPanel::~AudioPanel()
@@ -51,7 +62,7 @@ AudioPanel::~AudioPanel()
 }
 
 void AudioPanel::select_file() {
-    QString file_path = QFileDialog::getOpenFileName(this, "Open Audio File", "", "Audio Files (*.mp3 *.m4a)");
+    QString file_path = QFileDialog::getOpenFileName(this, "Open Audio File", "", "Audio Files (*.mp3 *.m4a *.ogg)");
     if (!file_path.isEmpty()) {
         player->setSource(QUrl::fromLocalFile(file_path));
         QFileInfo file_info(file_path);
@@ -63,12 +74,12 @@ void AudioPanel::select_file() {
 void AudioPanel::toggle_repeat() {
     if (repeat_mode) {
         repeat_mode = false;
-        ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
-        player->setLoops(1); // No repeat
+        ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_CommandLink));
+//        player->setLoops(1); // No repeat
     } else {
         repeat_mode = true;
         ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
-        player->setLoops(QMediaPlayer::Infinite); // Repeat
+//        player->setLoops(QMediaPlayer::Infinite); // Repeat
     }
 }
 
@@ -77,11 +88,12 @@ void AudioPanel::set_volume(int value) {
 }
 
 void AudioPanel::update_duration(qint64 duration) {
+    this->duration = static_cast<int>(duration);
     ui->dial_seek->setMaximum(static_cast<int>(duration));
 }
 
 void AudioPanel::update_position(qint64 position) {
-    ui->dial_seek->setValue(static_cast<int>(position));
+    ui->dial_seek->setValue(static_cast<int>(position) % duration);
 }
 
 void AudioPanel::set_position(int position) {
@@ -93,6 +105,10 @@ void AudioPanel::update_status(QMediaPlayer::MediaStatus status) {
         ui->button_play->setEnabled(true);
         ui->button_pause->setEnabled(true);
         ui->button_stop->setEnabled(true);
+    } else if (status == QMediaPlayer::EndOfMedia) { // media repeat logic
+        if (repeat_mode) {
+            player->play();
+        }
     }
 }
 

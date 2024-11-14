@@ -12,6 +12,14 @@
             </PerProfileState>
           </value>
         </entry>
+        <entry key="Release">
+          <value>
+            <PerProfileState>
+              <option name="myQmlPath" value="$PROJECT_DIR$/../../../../Packages/Qt/6.6.2/msvc2019_64/./qml" />
+              <option name="myQtBinPath" value="$PROJECT_DIR$/../../../../Packages/Qt/6.6.2/msvc2019_64/bin" />
+            </PerProfileState>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
