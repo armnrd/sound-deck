@@ -30,8 +30,7 @@ AudioPanel::AudioPanel(QWidget *parent) :
     // Connect signals and slots using UI elements
     connect(ui->dial_seek, &QDial::sliderMoved, this, &AudioPanel::set_position);
     connect(ui->button_select, &QPushButton::clicked, this, &AudioPanel::select_file);
-    connect(ui->button_play, &QPushButton::clicked, player, &QMediaPlayer::play);
-    connect(ui->button_pause, &QPushButton::clicked, player, &QMediaPlayer::pause);
+    connect(ui->button_toggle_play, &QPushButton::clicked, this, &AudioPanel::toggle_play);
     connect(ui->button_stop, &QPushButton::clicked, player, &QMediaPlayer::stop);
     connect(ui->button_repeat, &QPushButton::clicked, this, &AudioPanel::toggle_repeat);
     connect(ui->slider_volume, &QSlider::valueChanged, this, &AudioPanel::set_volume);
@@ -45,15 +44,14 @@ AudioPanel::AudioPanel(QWidget *parent) :
     ticker_timer->start(100);
     ui->slider_volume->setValue(100);
 
-    for (auto & button: {ui->button_play, ui->button_repeat, ui->button_pause, ui->button_select, ui->button_stop}) {
+    // Set button icons
+    for (auto &button: {ui->button_select, ui->button_toggle_play, ui->button_stop, ui->button_repeat}) {
         button->setText("");
     }
-
-    ui->button_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    ui->button_pause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+    ui->button_select->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
+    ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     ui->button_stop->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
     ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_CommandLink));
-    ui->button_select->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
 }
 
 AudioPanel::~AudioPanel()
@@ -61,7 +59,18 @@ AudioPanel::~AudioPanel()
     delete ui;
 }
 
-void AudioPanel::select_file() {
+bool AudioPanel::is_playing()
+{
+    return playing;
+}
+
+bool AudioPanel::has_loaded_media()
+{
+    return loaded_media;
+}
+
+void AudioPanel::select_file()
+{
     QString file_path = QFileDialog::getOpenFileName(this, "Open Audio File", "", "Audio Files (*.mp3 *.m4a *.ogg)");
     if (!file_path.isEmpty()) {
         player->setSource(QUrl::fromLocalFile(file_path));
@@ -71,7 +80,46 @@ void AudioPanel::select_file() {
     }
 }
 
-void AudioPanel::toggle_repeat() {
+void AudioPanel::toggle_play()
+{
+    if (playing) {
+        player->pause();
+        ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        playing = false;
+    } else {
+        player->play();
+        ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        playing = true;
+    }
+}
+
+void AudioPanel::play()
+{
+    if (!playing) {
+        player->play();
+        ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        playing = true;
+    }
+}
+
+void AudioPanel::pause()
+{
+    if (playing) {
+        player->pause();
+        ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        playing = false;
+    }
+}
+
+void AudioPanel::stop()
+{
+    player->stop();
+    ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    playing = false;
+}
+
+void AudioPanel::toggle_repeat()
+{
     if (repeat_mode) {
         repeat_mode = false;
         ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_CommandLink));
@@ -83,28 +131,33 @@ void AudioPanel::toggle_repeat() {
     }
 }
 
-void AudioPanel::set_volume(int value) {
+void AudioPanel::set_volume(int value)
+{
     audio_output->setVolume(value / 100.0);
 }
 
-void AudioPanel::update_duration(qint64 duration) {
+void AudioPanel::update_duration(qint64 duration)
+{
     this->duration = static_cast<int>(duration);
     ui->dial_seek->setMaximum(static_cast<int>(duration));
 }
 
-void AudioPanel::update_position(qint64 position) {
+void AudioPanel::update_position(qint64 position)
+{
     ui->dial_seek->setValue(static_cast<int>(position) % duration);
 }
 
-void AudioPanel::set_position(int position) {
+void AudioPanel::set_position(int position)
+{
     player->setPosition(position);
 }
 
-void AudioPanel::update_status(QMediaPlayer::MediaStatus status) {
+void AudioPanel::update_status(QMediaPlayer::MediaStatus status)
+{
     if (status == QMediaPlayer::LoadedMedia) {
-        ui->button_play->setEnabled(true);
-        ui->button_pause->setEnabled(true);
+        ui->button_toggle_play->setEnabled(true);
         ui->button_stop->setEnabled(true);
+        loaded_media = true;
     } else if (status == QMediaPlayer::EndOfMedia) { // media repeat logic
         if (repeat_mode) {
             player->play();
@@ -112,7 +165,8 @@ void AudioPanel::update_status(QMediaPlayer::MediaStatus status) {
     }
 }
 
-void AudioPanel::update_ticker() {
+void AudioPanel::update_ticker()
+{
     if (!ticker_text.isEmpty()) {
         QString ticker_text_section = ticker_text.mid(ticker_position) + " " + ticker_text.left(ticker_position);
         ui->label_ticker->setText(ticker_text_section);

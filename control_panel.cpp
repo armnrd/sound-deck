@@ -16,9 +16,23 @@ ControlPanel::ControlPanel(QWidget *parent) :
         QWidget(parent), ui(new Ui::ControlPanel)
 {
     ui->setupUi(this);
+
+    // Set button icons
+    ui->button_toggle_play->setText("");
+    ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    ui->button_stop->setText("");
+    ui->button_stop->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
 }
 
 ControlPanel::~ControlPanel()
 {
     delete ui;
+}
+
+QPushButton *ControlPanel::get_button_toggle_play() {
+    return ui->button_toggle_play;
+}
+
+QPushButton *ControlPanel::get_button_stop() {
+    return ui->button_stop;
 }

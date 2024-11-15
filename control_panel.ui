@@ -6,48 +6,101 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>332</width>
+    <height>41</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>271</width>
+    <height>41</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>ControlPanel</string>
   </property>
-  <widget class="QPushButton" name="button_playpause">
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>75</width>
-     <height>24</height>
+     <x>0</x>
+     <y>0</y>
+     <width>332</width>
+     <height>41</height>
     </rect>
    </property>
-   <property name="text">
-    <string>PP</string>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
-  </widget>
-  <widget class="QComboBox" name="combo_box_set">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>10</y>
-     <width>111</width>
-     <height>22</height>
-    </rect>
+   <property name="minimumSize">
+    <size>
+     <width>271</width>
+     <height>41</height>
+    </size>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_set">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>10</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
    </property>
-   <property name="text">
-    <string>Set</string>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
    </property>
+   <widget class="QPushButton" name="button_toggle_play">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>24</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>P</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_stop">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>10</y>
+      <width>24</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>T</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="combo_box_set">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>10</y>
+      <width>171</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_set">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>10</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Set</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
