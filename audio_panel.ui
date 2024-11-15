@@ -40,23 +40,10 @@
    <property name="frameShadow">
     <enum>QFrame::Plain</enum>
    </property>
-   <widget class="QPushButton" name="button_pause">
-    <property name="geometry">
-     <rect>
-      <x>69</x>
-      <y>130</y>
-      <width>24</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>U</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="button_select">
     <property name="geometry">
      <rect>
-      <x>9</x>
+      <x>10</x>
       <y>130</y>
       <width>24</width>
       <height>24</height>
@@ -79,7 +66,7 @@
    <widget class="QPushButton" name="button_repeat">
     <property name="geometry">
      <rect>
-      <x>129</x>
+      <x>130</x>
       <y>130</y>
       <width>24</width>
       <height>24</height>
@@ -115,10 +102,10 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_play">
+   <widget class="QPushButton" name="button_toggle_play">
     <property name="geometry">
      <rect>
-      <x>39</x>
+      <x>50</x>
       <y>130</y>
       <width>24</width>
       <height>24</height>
@@ -131,7 +118,7 @@
    <widget class="QPushButton" name="button_stop">
     <property name="geometry">
      <rect>
-      <x>99</x>
+      <x>90</x>
       <y>130</y>
       <width>24</width>
       <height>24</height>

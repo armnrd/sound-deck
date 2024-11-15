@@ -10,6 +10,7 @@
 #define SOUND_DECK_CONTROL_PANEL_HPP
 
 #include <QWidget>
+#include <QPushButton>
 
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,10 @@ public:
     explicit ControlPanel(QWidget *parent = nullptr);
 
     ~ControlPanel() override;
+
+    QPushButton *get_button_toggle_play();
+
+    QPushButton *get_button_stop();
 
 private:
     Ui::ControlPanel *ui;

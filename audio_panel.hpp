@@ -30,9 +30,18 @@ public:
 
     ~AudioPanel() override;
 
-private slots:
+    bool is_playing();
+    bool has_loaded_media();
+
+public slots:
     void select_file();
     void toggle_repeat();
+    void toggle_play();
+    void play();
+    void pause();
+    void stop();
+
+private slots:
     void set_volume(int value);
     void update_duration(qint64 duration);
     void update_position(qint64 position);
@@ -46,9 +55,8 @@ private:
     QAudioOutput *audio_output;
     QTimer *ticker_timer;
     QString ticker_text = "";
-    int ticker_position = 0;
-    int duration = 0;
-    bool repeat_mode = false;
+    int ticker_position = 0, duration = 0;
+    bool loaded_media = false, playing = false, repeat_mode = false;
 };
 
 

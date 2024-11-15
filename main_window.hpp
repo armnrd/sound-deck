@@ -12,6 +12,7 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include "audio_panel.hpp"
+#include "control_panel.hpp"
 
 
 QT_BEGIN_NAMESPACE
@@ -30,13 +31,15 @@ public:
 
     ~MainWindow() override;
 
+private slots:
+    void control_toggle_play();
+    void control_stop();
+
 private:
     Ui::MainWindow *ui;
     QGridLayout *layout;
-    AudioPanel *panel1;
-    AudioPanel *panel2;
-    AudioPanel *panel3;
-    AudioPanel *panel4;
+    AudioPanel *panel1, *panel2, *panel3, *panel4;
+    ControlPanel *control_panel;
 };
 
 
