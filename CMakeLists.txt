@@ -16,7 +16,7 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-find_package(yaml-cpp REQUIRED)
+#find_package(yaml-cpp REQUIRED)
 
 add_executable(sound-deck WIN32
         main.cpp
