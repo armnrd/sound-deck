@@ -49,9 +49,6 @@
       <height>24</height>
      </rect>
     </property>
-    <property name="text">
-     <string>S</string>
-    </property>
    </widget>
    <widget class="QLabel" name="label_ticker">
     <property name="geometry">
@@ -71,9 +68,6 @@
       <width>24</width>
       <height>24</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>R</string>
     </property>
    </widget>
    <widget class="QSlider" name="slider_volume">
@@ -111,9 +105,6 @@
       <height>24</height>
      </rect>
     </property>
-    <property name="text">
-     <string>P</string>
-    </property>
    </widget>
    <widget class="QPushButton" name="button_stop">
     <property name="geometry">
@@ -123,9 +114,6 @@
       <width>24</width>
       <height>24</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>T</string>
     </property>
    </widget>
   </widget>

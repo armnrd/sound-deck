@@ -16,8 +16,6 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-#find_package(yaml-cpp REQUIRED)
-
 add_executable(sound-deck WIN32
         main.cpp
         resources.qrc
@@ -38,15 +36,21 @@ target_link_libraries(sound-deck
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        Qt::Multimedia
-        yaml-cpp::yaml-cpp)
+        Qt::Multimedia)
 
 # Deployment for Windows to include all necessary DLLs and plugins
 if (WIN32)
-    add_custom_command(TARGET sound-deck POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo "Running windeployqt..."
-        COMMAND windeployqt.exe $<TARGET_FILE:sound-deck> --multimedia
-        COMMENT "Deploying Qt runtime dependencies using windeployqt.")
+    if(CMAKE_BUILD_TYPE STREQUAL Debug)
+        add_custom_command(TARGET sound-deck POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E echo "Running windeployqt..."
+            COMMAND windeployqt.exe --no-translations --no-compiler-runtime $<TARGET_FILE:sound-deck>
+            COMMENT "Deploying Qt runtime dependencies using windeployqt.")
+    else ()
+        add_custom_command(TARGET sound-deck POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E echo "Running windeployqt..."
+                COMMAND windeployqt.exe --release --no-translations --no-compiler-runtime $<TARGET_FILE:sound-deck>
+                COMMENT "Deploying Qt runtime dependencies using windeployqt.")
+    endif ()
 endif()
 
 # Copy configuration, etc. files to the build directory after building the target
