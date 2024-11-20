@@ -55,7 +55,7 @@ private:
     QAudioOutput *audio_output;
     QTimer *ticker_timer;
     QString ticker_text = "";
-    int ticker_position = 0, duration = 0;
+    int ticker_position = 0, ticker_length = 29, duration = 0;
     bool loaded_media = false, playing = false, repeat_mode = false;
 };
 
