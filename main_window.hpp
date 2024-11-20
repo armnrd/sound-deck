@@ -32,7 +32,8 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void control_toggle_play();
+    void control_play();
+    void control_pause();
     void control_stop();
 
 private:

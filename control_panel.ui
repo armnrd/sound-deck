@@ -52,7 +52,7 @@
    <property name="frameShadow">
     <enum>QFrame::Plain</enum>
    </property>
-   <widget class="QPushButton" name="button_toggle_play">
+   <widget class="QPushButton" name="button_play">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -61,11 +61,8 @@
       <height>24</height>
      </rect>
     </property>
-    <property name="text">
-     <string>P</string>
-    </property>
    </widget>
-   <widget class="QPushButton" name="button_stop">
+   <widget class="QPushButton" name="button_pause">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -73,9 +70,6 @@
       <width>24</width>
       <height>24</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>T</string>
     </property>
    </widget>
    <widget class="QComboBox" name="combo_box_set">
@@ -99,6 +93,16 @@
     </property>
     <property name="text">
      <string>Set</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_stop">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>10</y>
+      <width>24</width>
+      <height>24</height>
+     </rect>
     </property>
    </widget>
   </widget>

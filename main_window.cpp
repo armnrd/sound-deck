@@ -31,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     control_panel = new ControlPanel(this);
 
     // Connect signals from control_panel
-    connect(control_panel->get_button_toggle_play(), &QPushButton::clicked, this, &MainWindow::control_toggle_play);
+    connect(control_panel->get_button_play(), &QPushButton::clicked, this, &MainWindow::control_play);
+    connect(control_panel->get_button_pause(), &QPushButton::clicked, this, &MainWindow::control_pause);
     connect(control_panel->get_button_stop(), &QPushButton::clicked, this, &MainWindow::control_stop);
 
     // Set layout
@@ -49,26 +50,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::control_toggle_play()
+void MainWindow::control_play()
 {
-    bool playing = false;
     for (auto &panel: {panel1, panel2, panel3, panel4}) {
-        if (panel->is_playing()) {
-            playing = true;
-        }
+        panel->play();
     }
-    if (playing) {
-        for (auto &panel: {panel1, panel2, panel3, panel4}) {
-            panel->pause();
-        }
-        control_panel->get_button_toggle_play()->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    } else {
-        for (auto &panel: {panel1, panel2, panel3, panel4}) {
-            if (panel->has_loaded_media()) {
-                panel->play();
-                control_panel->get_button_toggle_play()->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-            }
-        }
+}
+
+void MainWindow::control_pause()
+{
+    for (auto &panel: {panel1, panel2, panel3, panel4}) {
+        panel->pause();
     }
 }
 
@@ -77,5 +69,4 @@ void MainWindow::control_stop()
     for (auto &panel: {panel1, panel2, panel3, panel4}) {
         panel->stop();
     }
-    control_panel->get_button_toggle_play()->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 }
