@@ -16,8 +16,6 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-#find_package(yaml-cpp REQUIRED)
-
 add_executable(sound-deck WIN32
         main.cpp
         resources.qrc
@@ -38,8 +36,7 @@ target_link_libraries(sound-deck
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        Qt::Multimedia
-        yaml-cpp::yaml-cpp)
+        Qt::Multimedia)
 
 # Deployment for Windows to include all necessary DLLs and plugins
 if (WIN32)

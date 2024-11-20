@@ -29,7 +29,9 @@ public:
 
     ~ControlPanel() override;
 
-    QPushButton *get_button_toggle_play();
+    QPushButton *get_button_play();
+
+    QPushButton *get_button_pause();
 
     QPushButton *get_button_stop();
 
