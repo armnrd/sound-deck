@@ -172,7 +172,9 @@ void AudioPanel::update_status(QMediaPlayer::MediaStatus status)
 void AudioPanel::update_ticker()
 {
     if (!ticker_text.isEmpty()) {
-        QString ticker_text_section = ticker_text.mid(ticker_position) + " " + ticker_text.left(ticker_position);
+        QString ticker_text_section = ticker_text.mid(ticker_position) + "     " + ticker_text.left(ticker_position);
+        ticker_text_section = ticker_text_section.first(ticker_length - 2) + "  "; // use first ticker_length - 2 chars
+        ticker_text_section = ticker_text_section.leftJustified(ticker_length, ' '); // pad to ticker_length chars
         ui->label_ticker->setText(ticker_text_section);
         ticker_position = (ticker_position + 1) % ticker_text.length();
     }
