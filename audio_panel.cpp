@@ -31,7 +31,7 @@ AudioPanel::AudioPanel(QWidget *parent) :
     connect(ui->dial_seek, &QDial::sliderMoved, this, &AudioPanel::set_position);
     connect(ui->button_select, &QPushButton::clicked, this, &AudioPanel::select_file);
     connect(ui->button_toggle_play, &QPushButton::clicked, this, &AudioPanel::toggle_play);
-    connect(ui->button_stop, &QPushButton::clicked, player, &QMediaPlayer::stop);
+    connect(ui->button_stop, &QPushButton::clicked, this, &AudioPanel::stop);
     connect(ui->button_repeat, &QPushButton::clicked, this, &AudioPanel::toggle_repeat);
     connect(ui->slider_volume, &QSlider::valueChanged, this, &AudioPanel::set_volume);
     connect(player, &QMediaPlayer::durationChanged, this, &AudioPanel::update_duration);
@@ -45,13 +45,13 @@ AudioPanel::AudioPanel(QWidget *parent) :
     ui->slider_volume->setValue(100);
 
     // Set button icons
-    for (auto &button: {ui->button_select, ui->button_toggle_play, ui->button_stop, ui->button_repeat}) {
-        button->setText("");
-    }
     ui->button_select->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
     ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    ui->button_toggle_play->setEnabled(false);
     ui->button_stop->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
+    ui->button_stop->setEnabled(false);
     ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_CommandLink));
+    ui->button_repeat->setEnabled(false);
 }
 
 AudioPanel::~AudioPanel()
@@ -95,7 +95,7 @@ void AudioPanel::toggle_play()
 
 void AudioPanel::play()
 {
-    if (!playing) {
+    if (!playing && loaded_media) {
         player->play();
         ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
         playing = true;
@@ -113,9 +113,11 @@ void AudioPanel::pause()
 
 void AudioPanel::stop()
 {
-    player->stop();
-    ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    playing = false;
+    if (playing) {
+        player->stop();
+        ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        playing = false;
+    }
 }
 
 void AudioPanel::toggle_repeat()
@@ -157,6 +159,7 @@ void AudioPanel::update_status(QMediaPlayer::MediaStatus status)
     if (status == QMediaPlayer::LoadedMedia) {
         ui->button_toggle_play->setEnabled(true);
         ui->button_stop->setEnabled(true);
+        ui->button_repeat->setEnabled(true);
         loaded_media = true;
     } else if (status == QMediaPlayer::EndOfMedia) { // media repeat logic
         if (repeat_mode) {
