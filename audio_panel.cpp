@@ -165,6 +165,9 @@ void AudioPanel::update_status(QMediaPlayer::MediaStatus status)
     } else if (status == QMediaPlayer::EndOfMedia) { // media repeat logic
         if (repeat_mode) {
             player->play();
+        } else {
+            ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+            playing = false;
         }
     }
 }
