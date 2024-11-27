@@ -46,9 +46,17 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menu_Device">
+    <property name="title">
+     <string>Device</string>
+    </property>
+    <addaction name="device_Default"/>
+    <addaction name="separator"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menuSets"/>
    <addaction name="menuHelp"/>
+   <addaction name="menu_Device"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
@@ -84,6 +92,22 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="device_Default">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Default</string>
+   </property>
+  </action>
+  <action name="actionfas">
+   <property name="text">
+    <string>fas</string>
    </property>
   </action>
  </widget>
