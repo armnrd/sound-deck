@@ -35,11 +35,11 @@ public:
 
 public slots:
     void select_file();
-    void toggle_repeat();
     void toggle_play();
     void play();
     void pause();
     void stop();
+    void toggle_repeat();
 
 private slots:
     void set_volume(int value);
@@ -48,14 +48,14 @@ private slots:
     void set_position(int position);
     void update_status(QMediaPlayer::MediaStatus status);
     void update_ticker();
+    void load_file(const QString &file_path);
 
 private:
     Ui::AudioPanel *ui;
     QMediaPlayer *player;
     QAudioOutput *audio_output;
-    QTimer *ticker_timer;
     QString ticker_text = "";
-    int ticker_position = 0, ticker_length = 29, duration = 0;
+    int ticker_position = 0, track_duration = 0;
     bool loaded_media = false, playing = false, repeat_mode = false;
 };
 

@@ -25,7 +25,7 @@ AudioPanel::AudioPanel(QWidget *parent) :
     // Initialize member variables
     player = new QMediaPlayer(this);
     audio_output = new QAudioOutput(this);
-    ticker_timer = new QTimer(this);
+    auto ticker_timer = new QTimer(this);
 
     // Connect signals and slots using UI elements
     connect(ui->dial_seek, &QDial::sliderMoved, this, &AudioPanel::set_position);
@@ -41,8 +41,8 @@ AudioPanel::AudioPanel(QWidget *parent) :
 
     // Set up media player and ticker
     player->setAudioOutput(audio_output);
-    ticker_timer->start(100);
     ui->slider_volume->setValue(100);
+    ticker_timer->start(100);
 
     // Set button icons
     ui->button_select->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
@@ -71,14 +71,23 @@ bool AudioPanel::has_loaded_media()
 
 void AudioPanel::select_file()
 {
-    QString file_path = QFileDialog::getOpenFileName(this, "Open Audio File", "", "Audio Files (*.mp3 *.m4a *.ogg)");
+    QFileDialog *dialog = new QFileDialog(this);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+    dialog->setNameFilter("Audio Files (*.mp3 *.m4a *.ogg)");
+
+    connect(dialog, &QFileDialog::fileSelected, this, &AudioPanel::load_file);
+    dialog->show();
+}
+
+void AudioPanel::load_file(const QString &file_path)
+{
     if (!file_path.isEmpty()) {
         stop();
         player->setSource(QUrl::fromLocalFile(file_path));
-        QFileInfo file_info(file_path);
-        ticker_text = file_info.fileName() + "    ";
+        ticker_text =   QFileInfo(file_path).fileName().leftJustified(40, ' ');
         ticker_position = 0;
     }
+
 }
 
 void AudioPanel::toggle_play()
@@ -141,13 +150,13 @@ void AudioPanel::set_volume(int value)
 
 void AudioPanel::update_duration(qint64 duration)
 {
-    this->duration = static_cast<int>(duration);
+    this->track_duration = static_cast<int>(duration);
     ui->dial_seek->setMaximum(static_cast<int>(duration));
 }
 
 void AudioPanel::update_position(qint64 position)
 {
-    ui->dial_seek->setValue(static_cast<int>(position) % duration);
+    ui->dial_seek->setValue(static_cast<int>(position) % track_duration);
 }
 
 void AudioPanel::set_position(int position)
@@ -175,9 +184,7 @@ void AudioPanel::update_status(QMediaPlayer::MediaStatus status)
 void AudioPanel::update_ticker()
 {
     if (!ticker_text.isEmpty()) {
-        QString ticker_text_section = ticker_text.mid(ticker_position) + "     " + ticker_text.left(ticker_position);
-        ticker_text_section = ticker_text_section.first(ticker_length - 2) + "  "; // use first ticker_length - 2 chars
-        ticker_text_section = ticker_text_section.leftJustified(ticker_length, ' '); // pad to ticker_length chars
+        auto ticker_text_section = ticker_text.mid(ticker_position) + ticker_text.left(ticker_position);
         ui->label_ticker->setText(ticker_text_section);
         ticker_position = (ticker_position + 1) % ticker_text.length();
     }
