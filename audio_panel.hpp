@@ -41,6 +41,10 @@ public slots:
     void stop();
     void toggle_repeat();
 
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+
 private slots:
     void set_volume(int value);
     void update_duration(qint64 duration);
