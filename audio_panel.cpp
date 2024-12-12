@@ -12,6 +12,8 @@
 #include <QDial>
 #include <QTimer>
 #include <QFileDialog>
+#include <QDragEnterEvent>
+#include <QMimeData>
 #include <QDebug>
 #include "audio_panel.hpp"
 #include "ui_audio_panel.h"
@@ -21,6 +23,7 @@ AudioPanel::AudioPanel(QWidget *parent) :
         QWidget(parent), ui(new Ui::AudioPanel)
 {
     ui->setupUi(this);
+    setAcceptDrops(true);
 
     // Initialize member variables
     player = new QMediaPlayer(this);
@@ -141,6 +144,23 @@ void AudioPanel::toggle_repeat()
         ui->button_repeat->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
 //        player->setLoops(QMediaPlayer::Infinite); // Repeat
     }
+}
+
+void AudioPanel::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void AudioPanel::dropEvent(QDropEvent *event)
+{
+    auto url = new QUrl(event->mimeData()->text());
+    if (url->isLocalFile()) {
+        auto file_name = url->fileName();
+        if (file_name.endsWith("mp3") || file_name.endsWith("m4a") || file_name.endsWith("ogg")) {
+            load_file(event->mimeData()->text());
+        }
+    }
+    event->acceptProposedAction();
 }
 
 void AudioPanel::set_volume(int value)

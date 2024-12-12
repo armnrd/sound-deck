@@ -9,15 +9,12 @@ set(CMAKE_AUTOUIC ON)
 
 list(APPEND CMAKE_PREFIX_PATH "C:/Packages/Qt/6.6.2/msvc2019_64")
 
-find_package(Qt6 COMPONENTS
+find_package(Qt6 COMPONENTS REQUIRED
         Core
         Gui
         Widgets
         Multimedia
-        REQUIRED
 )
-
-#add_executable(sound-deck qmedia_test.cpp)
 
 add_executable(sound-deck WIN32
         main.cpp
