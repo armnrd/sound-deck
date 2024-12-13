@@ -87,7 +87,7 @@ void AudioPanel::load_file(const QString &file_path)
     if (!file_path.isEmpty()) {
         stop();
         player->setSource(QUrl::fromLocalFile(file_path));
-        ticker_text =   QFileInfo(file_path).fileName().leftJustified(40, ' ');
+        ticker_text = QFileInfo(file_path).fileName().leftJustified(40, ' ');
         ticker_position = 0;
     }
 
@@ -148,19 +148,24 @@ void AudioPanel::toggle_repeat()
 
 void AudioPanel::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->acceptProposedAction();
+    // Check if the MIME data contains URLs (e.g., file paths)
+    if (event->mimeData()->hasUrls()) {
+        event->acceptProposedAction(); // Accept the drag action
+    }
 }
 
 void AudioPanel::dropEvent(QDropEvent *event)
 {
-    auto url = new QUrl(event->mimeData()->text());
-    if (url->isLocalFile()) {
-        auto file_name = url->fileName();
-        if (file_name.endsWith("mp3") || file_name.endsWith("m4a") || file_name.endsWith("ogg")) {
-            load_file(event->mimeData()->text());
+    if (event->mimeData()->hasUrls()) {
+        QUrl url = event->mimeData()->urls()[0];
+        if (url.isLocalFile()) {
+            auto file_name = url.fileName();
+            if (file_name.endsWith("mp3") || file_name.endsWith("m4a") || file_name.endsWith("ogg")) {
+                load_file(url.toLocalFile());
+                event->acceptProposedAction();
+            }
         }
     }
-    event->acceptProposedAction();
 }
 
 void AudioPanel::set_volume(int value)
