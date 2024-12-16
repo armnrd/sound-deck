@@ -42,7 +42,7 @@ target_link_libraries(sound-deck
 # Copy configuration, etc. files to the build directory after building the target
 add_custom_command(
         TARGET sound-deck POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/config.yml $<TARGET_FILE_DIR:sound-deck>
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/config.yml $<TARGET_FILE_DIR:sound-deck>
         COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/sounds $<TARGET_FILE_DIR:sound-deck>/sounds
 )
 

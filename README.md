@@ -14,9 +14,10 @@
 Clone the repository and build with **CMake**:
 
 ```bash
-git clone https://github.com/your-username/sound-deck.git
+git clone https://github.com/armnrd/sound-deck.git
 cd sound-deck
 mkdir build
 cd build
 cmake ..
 make sound-deck
+```
