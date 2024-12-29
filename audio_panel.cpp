@@ -31,7 +31,7 @@ AudioPanel::AudioPanel(QWidget *parent) :
     auto ticker_timer = new QTimer(this);
 
     // Connect signals and slots using UI elements
-    connect(ui->dial_seek, &QDial::sliderMoved, this, &AudioPanel::set_position);
+    connect(ui->dial_seek, &QDial::sliderMoved , this, &AudioPanel::set_position);
     connect(ui->button_select, &QPushButton::clicked, this, &AudioPanel::select_file);
     connect(ui->button_toggle_play, &QPushButton::clicked, this, &AudioPanel::toggle_play);
     connect(ui->button_stop, &QPushButton::clicked, this, &AudioPanel::stop);
@@ -126,11 +126,9 @@ void AudioPanel::pause()
 
 void AudioPanel::stop()
 {
-    if (playing) {
-        player->stop();
-        ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-        playing = false;
-    }
+    player->stop();
+    ui->button_toggle_play->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    playing = false;
 }
 
 void AudioPanel::toggle_repeat()

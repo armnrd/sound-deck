@@ -63,5 +63,4 @@ private:
     bool loaded_media = false, playing = false, repeat_mode = false;
 };
 
-
 #endif //SOUND_DECK_AUDIO_PANEL_HPP
